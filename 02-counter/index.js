@@ -1,6 +1,6 @@
 import {Observable as O} from "rx"
 
-const main = T => in$ => {
+const main = (T, initial = 0) => in$ => {
   const {DOM: {h, withEvents, events}, compose, decompose} = T
 
   const actions = decompose(in$, "inc$", "dec$")
@@ -10,7 +10,7 @@ const main = T => in$ => {
     return inc$
       .map(() => +1)
       .merge(dec$.map(() => -1))
-      .startWith(0)
+      .startWith(initial)
       .scan((state, d) => state + d)
       .shareReplay(1)
   }
@@ -38,7 +38,7 @@ const main = T => in$ => {
       counter$.sample(events(vdom$, ".dec-odd", "click")).filter(val => val % 2)
     )
 
-    const out$ = compose({DOM: vdom$})
+    const out$ = compose({DOM: vdom$, value$: counter$})
     const action$ = compose({inc$, dec$})
     return [out$, action$]
   }
