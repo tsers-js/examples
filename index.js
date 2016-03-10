@@ -6,6 +6,7 @@ import makeRouter from "./router-driver"
 
 import Hello from "./01-hello-world"
 import Counter from "./02-counter"
+import NestedCounters from "./03-nested-counters"
 
 
 const main = T => in$ => {
@@ -14,6 +15,7 @@ const main = T => in$ => {
   return route(in$, "Router", {
     "/hello": Playground(T, Hello),
     "/counter": Playground(T, Counter),
+    "/counters": Playground(T, NestedCounters),
     "/*": Navigation(T)
   })
 }
@@ -27,7 +29,8 @@ const Navigation = T => in$ => {
       h("h1", "Example list"),
       h("ul.examples", [
         h("li", [h("a", {href: "#hello"}, "Hello World")]),
-        h("li", [h("a", {href: "#counter"}, "Counter")])
+        h("li", [h("a", {href: "#counter"}, "Counter")]),
+        h("li", [h("a", {href: "#counters"}, "Nested Counters")])
       ])
     ])
 
@@ -51,7 +54,7 @@ const Playground = (T, Example) => in$ => {
     const {DOM: exampleDom$, ...exampleOut} = run(in$, Example(T))
     const vdom$ = exampleDom$.map(vdom =>
       h("div", [
-        h("div", [h("a.back-to-examples", {href: "#"}, "Back to examples")]),
+        h("div", [h("a.back-to-examples", {href: "#/"}, "Back to examples")]),
         h("div", [vdom])
       ]))
 
