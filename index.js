@@ -4,19 +4,21 @@ import makeReactDOM from "@tsers/react"
 import makeRouter from "./router-driver"
 
 
-import hello from "./01-hello-world"
+import Hello from "./01-hello-world"
+import Counter from "./02-counter"
 
 
 const main = T => in$ => {
   const {Router: {route}} = T
 
   return route(in$, "Router", {
-    "/hello": playground(T, hello),
-    "/*": navigation(T)
+    "/hello": Playground(T, Hello),
+    "/counter": Playground(T, Counter),
+    "/*": Navigation(T)
   })
 }
 
-const navigation = T => in$ => {
+const Navigation = T => in$ => {
   const {DOM: {withEvents, events, h}, compose} = T
   return intent(view())
 
@@ -24,7 +26,8 @@ const navigation = T => in$ => {
     const vdom = h("div", [
       h("h1", "Example list"),
       h("ul.examples", [
-        h("li", [h("a", {href: "#hello"}, "Hello World")])
+        h("li", [h("a", {href: "#hello"}, "Hello World")]),
+        h("li", [h("a", {href: "#counter"}, "Counter")])
       ])
     ])
 
@@ -40,12 +43,12 @@ const navigation = T => in$ => {
   }
 }
 
-const playground = (T, example) => in$ => {
+const Playground = (T, Example) => in$ => {
   const {DOM: {withEvents, events, h}, compose, run} = T
   return intent(view())
 
   function view() {
-    const {DOM: exampleDom$, ...exampleOut} = run(in$, example(T))
+    const {DOM: exampleDom$, ...exampleOut} = run(in$, Example(T))
     const vdom$ = exampleDom$.map(vdom =>
       h("div", [
         h("div", [h("a.back-to-examples", {href: "#"}, "Back to examples")]),
@@ -58,7 +61,7 @@ const playground = (T, example) => in$ => {
   function intent([vdom$, {Router, ...out}]) {
     const route$ = events(vdom$, ".back-to-examples", "click")
       .do(e => e.preventDefault())
-      .map(() => e.target.getAttribute("href"))
+      .map(e => e.target.getAttribute("href"))
       .merge(Router)
 
     return compose({DOM: vdom$, Router: route$, ...out})
