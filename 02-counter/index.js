@@ -3,15 +3,13 @@ import {Observable as O} from "rx"
 const main = T => in$ => {
   const {DOM: {h, withEvents, events}, compose, decompose} = T
 
-  const actions = decompose(in$, "inc$", "dec$", "incAsync$", "decOdd$")
+  const actions = decompose(in$, "inc$", "dec$")
   return intent(view(model(actions)))
 
-  function model({inc$, dec$, incAsync$, decOdd$}) {
-    const anyInc$ = inc$.merge(incAsync$)
-    const anyDec$ = dec$.merge(decOdd$)
-    return anyInc$
+  function model({inc$, dec$}) {
+    return inc$
       .map(() => +1)
-      .merge(anyDec$.map(() => -1))
+      .merge(dec$.map(() => -1))
       .startWith(0)
       .scan((state, d) => state + d)
       .shareReplay(1)
@@ -31,13 +29,17 @@ const main = T => in$ => {
   }
 
   function intent([counter$, vdom$]) {
-    const inc$ = events(vdom$, ".inc", "click")
-    const dec$ = events(vdom$, ".dec", "click")
-    const incAsync$ = events(vdom$, ".inc-async", "click").delay(1000)
-    const decOdd$ = counter$.sample(events(vdom$, ".dec-odd", "click")).filter(val => val % 2)
+    const inc$ = O.merge(
+      events(vdom$, ".inc", "click"),
+      events(vdom$, ".inc-async", "click").delay(1000)
+    )
+    const dec$ = O.merge(
+      events(vdom$, ".dec", "click"),
+      counter$.sample(events(vdom$, ".dec-odd", "click")).filter(val => val % 2)
+    )
 
     const out$ = compose({DOM: vdom$})
-    const action$ = compose({inc$, dec$, incAsync$, decOdd$})
+    const action$ = compose({inc$, dec$})
     return [out$, action$]
   }
 }
