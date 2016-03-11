@@ -47,34 +47,35 @@ const Navigation = T => in$ => {
 }
 
 const Playground = (T, Example) => in$ => {
-  const {DOM: {withEvents, events, h}, compose, run} = T
+  const {DOM: {withEvents, events, h}, compose, run, decompose} = T
   return intent(view())
 
   function view() {
-    const {DOM: exampleDom$, ...exampleOut} = run(in$, Example(T))
-    const vdom$ = exampleDom$.map(vdom =>
+    const [example, exampleOut$] = decompose(run(in$, Example(T)), "DOM", "Router")
+    const vdom$ = example.DOM.map(vdom =>
       h("div", [
         h("div", [h("a.back-to-examples", {href: "#/"}, "Back to examples")]),
         h("div", [vdom])
       ]))
 
-    return [withEvents(vdom$), exampleOut]
+    return [withEvents(vdom$), example.Router, exampleOut$]
   }
 
-  function intent([vdom$, {Router, ...out}]) {
+  function intent([vdom$, Router, exampleOut$]) {
     const route$ = events(vdom$, ".back-to-examples", "click")
       .do(e => e.preventDefault())
-      .map(e => e.target.getAttribute("href"))
+      .map(e => "")
       .merge(Router)
 
-    return compose({DOM: vdom$, Router: route$, ...out})
+    return compose({DOM: vdom$, Router: route$}, exampleOut$)
   }
 }
 
 
-const [T, S, E] = TSERS({
+const [T, signal$, execute] = TSERS({
   DOM: makeReactDOM("#app"),
   Router: makeRouter()
 })
+const {run} = T
 
-E(T.loop(S, main(T)))
+execute(run(signal$, main(T)))

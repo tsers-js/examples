@@ -4,9 +4,9 @@ import Counter from "../02-counter"
 
 
 const main = (T, initial = {a: 0, b: 5}) => in$ => {
-  const {DOM: {h, withEvents, events}, run, compose, decompose} = T
+  const {DOM: {h, withEvents, events}, run, compose, decompose, lift} = T
 
-  const actions = decompose(in$, "updateA$", "updateB$")
+  const [actions] = decompose(in$, "updateA$", "updateB$")
   return intent(view(model(actions)))
 
   function model({updateA$, updateB$}) {
@@ -22,27 +22,22 @@ const main = (T, initial = {a: 0, b: 5}) => in$ => {
   }
 
   function view(model$) {
-    const viewOut$ = model$.flatMapLatest(({a, b}) => {
-      const {DOM: aDOM$, value$: a$, ...aOut} = run(in$, Counter(T, a), "value$")
-      const {DOM: bDOM$, value$: b$, ...bOut} = run(in$, Counter(T, b), "value$")
-      const vdom$ = O.combineLatest(aDOM$, bDOM$, (aDOM, bDOM) =>
-        h("div", [
-          aDOM,
-          bDOM,
-          h("hr"),
-          h("h2", `Total: ${a + b}`),
-          h("button.reset", "Reset all")
-        ]))
+    const [a, aOut$] = lift(model$.map(m => run(in$, Counter(T, m.a))), "DOM", "value$")
+    const [b, bOut$] = lift(model$.map(m => run(in$, Counter(T, m.b))), "DOM", "value$")
 
-      return compose({DOM: withEvents(vdom$), a$, b$})
-        .merge(compose(aOut))
-        .merge(compose(bOut))
-    })
+    const vdom$ = O.combineLatest(model$, a.DOM, b.DOM, ({a, b}, aDOM, bDOM) =>
+      h("div", [
+        aDOM,
+        bDOM,
+        h("hr"),
+        h("h2", `Total: ${a + b}`),
+        h("button.reset", "Reset all")
+      ]))
 
-    return [model$, decompose(viewOut$.share(), "a$", "b$")]
+    return [model$, a.value$, b.value$, withEvents(vdom$), O.merge(aOut$, bOut$)]
   }
 
-  function intent([model$, {DOM: vdom$, a$, b$, ...out}]) {
+  function intent([model$, a$, b$, vdom$, childrenOut$]) {
     const changes = s$ =>
       s$.skip(1).distinctUntilChanged()
 
@@ -50,9 +45,9 @@ const main = (T, initial = {a: 0, b: 5}) => in$ => {
     const updateA$ = changes(a$).merge(reset$)
     const updateB$ = changes(b$).merge(reset$)
 
-    const out$ = compose({...out, DOM: vdom$, value$: model$})
+    const out$ = compose({DOM: vdom$, value$: model$}, childrenOut$)
     const action$ = compose({updateA$, updateB$})
-    return [ out$, action$ ]
+    return [out$, action$]
   }
 }
 

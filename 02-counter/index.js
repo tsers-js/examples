@@ -3,7 +3,7 @@ import {Observable as O} from "rx"
 const main = (T, initial = 0) => in$ => {
   const {DOM: {h, withEvents, events}, compose, decompose} = T
 
-  const actions = decompose(in$, "inc$", "dec$")
+  const [actions] = decompose(in$, "inc$", "dec$")
   return intent(view(model(actions)))
 
   function model({inc$, dec$}) {
