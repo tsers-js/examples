@@ -7,6 +7,7 @@ import makeRouter from "./router-driver"
 import Hello from "./01-hello-world"
 import Counter from "./02-counter"
 import NestedCounters from "./03-nested-counters"
+import CounterList from "./04-counters-list"
 
 
 const main = T => in$ => {
@@ -16,6 +17,7 @@ const main = T => in$ => {
     "/hello": Playground(T, Hello),
     "/counter": Playground(T, Counter),
     "/counters": Playground(T, NestedCounters),
+    "/list": Playground(T, CounterList),
     "/*": Navigation(T)
   })
 }
@@ -30,7 +32,8 @@ const Navigation = T => in$ => {
       h("ul.examples", [
         h("li", [h("a", {href: "#hello"}, "Hello World")]),
         h("li", [h("a", {href: "#counter"}, "Counter")]),
-        h("li", [h("a", {href: "#counters"}, "Nested Counters")])
+        h("li", [h("a", {href: "#counters"}, "Nested Counters")]),
+        h("li", [h("a", {href: "#list"}, "Dynamic Counter List")])
       ])
     ])
 
