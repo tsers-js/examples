@@ -1,7 +1,7 @@
 import {Observable as O} from "rx"
 import TSERS from "@tsers/core"
 import makeReactDOM from "@tsers/react"
-import makeRouter from "./router-driver"
+import makeRouter from "./05-router-driver"
 
 
 import Hello from "./01-hello-world"
