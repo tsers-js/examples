@@ -1,19 +1,21 @@
 import {Observable as O} from "rx"
 
 const main = T => in$ => {
-  const {DOM: {h, withEvents}, compose} = T
-  return intent(view(model()))
+  const {DOM: {h, withEvents}, decompose, compose} = T
 
-  function model() {
-    const second$ = O.interval(1000).startWith(0)
-    return second$
+  const [actions] = decompose(in$, "Seconds")
+  return intent(view(model(actions)))
+
+  function model({Seconds: sec$}) {
+    const msg$ = sec$.map(sec => "Tsers" + (sec % 2 ? "." : "!"))
+    return msg$
   }
 
-  function view(second$) {
-    const vdom$ = second$.map(secs => h("div", [
-      h("h1", "Tsers!"),
-      h("p", `This example has been running ${secs} seconds`)
-    ]))
+  function view(msg$) {
+    const vdom$ = msg$.map(msg =>
+      h("div", [
+        h("h1", msg)
+      ]))
     return withEvents(vdom$)
   }
 
@@ -23,3 +25,24 @@ const main = T => in$ => {
 }
 
 export default main
+
+/*
+// How to run your application
+// indexOfYourApp.js
+import {Observable as O} from "rx"
+import TSERS from "@tsers/core"
+import makeDOM from "@tsers/react"
+import makeSeconds from "./seconds-driver"
+
+import main from "./hello-world"
+
+
+const [Transducers, signal$, execute] = TSERS({
+  DOM: makeDOM("#app"),
+  Seconds: makeSeconds()
+})
+
+const {run} = Transducers
+execute(run(singal$, main(Transducers)))
+
+ */

@@ -10,6 +10,14 @@ import NestedCounters from "./03-nested-counters"
 import CounterList from "./04-counters-list"
 
 
+function makeSeconds() {
+  return function secondsDriver() {
+    const signals = O.interval(1000).startWith(0)
+    return { signals }
+  }
+}
+
+
 const main = T => in$ => {
   const {Router: {route}} = T
 
@@ -75,10 +83,11 @@ const Playground = (T, Example) => in$ => {
 }
 
 
-const [T, signal$, execute] = TSERS({
+const [Transducers, signal$, execute] = TSERS({
   DOM: makeReactDOM("#app"),
+  Seconds: makeSeconds(),
   Router: makeRouter()
 })
-const {run} = T
+const {run} = Transducers
 
-execute(run(signal$, main(T)))
+execute(run(signal$, main(Transducers)))
