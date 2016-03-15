@@ -1,7 +1,7 @@
 import {Observable as O} from "rx"
 
 const main = (T, initial = 0) => in$ => {
-  const {DOM: {h, withEvents, events}, compose, decompose} = T
+  const {DOM: {h, prepare, events}, compose, decompose} = T
 
   const [actions] = decompose(in$, "inc$", "dec$")
   return intent(view(model(actions)))
@@ -25,7 +25,7 @@ const main = (T, initial = 0) => in$ => {
         h("button.dec-odd", "Decrement if odd")
       ])
     ]))
-    return [counter$, withEvents(vdom$)]
+    return [counter$, prepare(vdom$)]
   }
 
   function intent([counter$, vdom$]) {

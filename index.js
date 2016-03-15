@@ -31,21 +31,21 @@ const main = T => in$ => {
 }
 
 const Navigation = T => in$ => {
-  const {DOM: {withEvents, events, h}, compose} = T
+  const {DOM: {prepare, events, h}, compose} = T
   return intent(view())
 
   function view() {
     const vdom = h("div", [
       h("h1", "Example list"),
       h("ul.examples", [
-        h("li", [h("a", {href: "#hello"}, "Hello World")]),
-        h("li", [h("a", {href: "#counter"}, "Counter")]),
-        h("li", [h("a", {href: "#counters"}, "Nested Counters")]),
-        h("li", [h("a", {href: "#list"}, "Dynamic Counter List")])
+        h("li", [h("a", {href: "#/hello"}, "Hello World")]),
+        h("li", [h("a", {href: "#/counter"}, "Counter")]),
+        h("li", [h("a", {href: "#/counters"}, "Nested Counters")]),
+        h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")])
       ])
     ])
 
-    return withEvents(O.just(vdom))
+    return prepare(O.just(vdom))
   }
 
   function intent(vdom$) {
@@ -58,7 +58,7 @@ const Navigation = T => in$ => {
 }
 
 const Playground = (T, Example) => in$ => {
-  const {DOM: {withEvents, events, h}, compose, run, decompose} = T
+  const {DOM: {prepare, events, h}, compose, run, decompose} = T
   return intent(view())
 
   function view() {
@@ -69,13 +69,13 @@ const Playground = (T, Example) => in$ => {
         h("div", [vdom])
       ]))
 
-    return [withEvents(vdom$), example.Router, exampleOut$]
+    return [prepare(vdom$), example.Router, exampleOut$]
   }
 
   function intent([vdom$, Router, exampleOut$]) {
     const route$ = events(vdom$, ".back-to-examples", "click")
       .do(e => e.preventDefault())
-      .map(e => "")
+      .map(e => e.target.getAttribute("href"))
       .merge(Router)
 
     return compose({DOM: vdom$, Router: route$}, exampleOut$)

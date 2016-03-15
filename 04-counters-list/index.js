@@ -4,7 +4,7 @@ import Counter from "../02-counter"
 
 
 const main = (T, initial = [10, 2, 1]) => in$ => {
-  const {DOM: {h, withEvents, events}, run, compose, decompose, liftArray} = T
+  const {DOM: {h, prepare, events}, run, compose, decompose, liftArray} = T
 
   const [actions] = decompose(in$, "update$", "add$", "rm$")
   return intent(view(model(actions)))
@@ -38,7 +38,7 @@ const main = (T, initial = [10, 2, 1]) => in$ => {
         h("button.add", "Add counter")
       ]))
 
-    return [counters$, counters.value$, withEvents(vdom$), out$]
+    return [counters$, counters.value$, prepare(vdom$), out$]
   }
 
   function intent([model$, childCounterValues$, vdom$, childrenOut$]) {

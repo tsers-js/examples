@@ -4,7 +4,7 @@ import Counter from "../02-counter"
 
 
 const main = (T, initial = {a: 0, b: 5}) => in$ => {
-  const {DOM: {h, withEvents, events}, run, compose, decompose, lift} = T
+  const {DOM: {h, prepare, events}, run, compose, decompose, lift} = T
 
   const [actions] = decompose(in$, "updateA$", "updateB$")
   return intent(view(model(actions)))
@@ -34,7 +34,7 @@ const main = (T, initial = {a: 0, b: 5}) => in$ => {
         h("button.reset", "Reset all")
       ]))
 
-    return [model$, a.value$, b.value$, withEvents(vdom$), O.merge(aOut$, bOut$)]
+    return [model$, a.value$, b.value$, prepare(vdom$), O.merge(aOut$, bOut$)]
   }
 
   function intent([model$, a$, b$, vdom$, childrenOut$]) {

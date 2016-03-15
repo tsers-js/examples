@@ -1,7 +1,7 @@
 import {Observable as O} from "rx"
 
 const main = T => in$ => {
-  const {DOM: {h, withEvents, events}, decompose, compose} = T
+  const {DOM: {h, prepare, events}, decompose, compose} = T
 
   const [actions] = decompose(in$, "add$")
   return intent(view(model(actions)))
@@ -20,7 +20,7 @@ const main = T => in$ => {
         h("h1", msg),
         h("button.add", "Click me!")
       ]))
-    return withEvents(vdom$)
+    return prepare(vdom$)
   }
 
   function intent(vdom$) {
