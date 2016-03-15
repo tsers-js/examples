@@ -25,7 +25,7 @@ function makeRouterDriver(h = createHashHistory()) {
           return O.throw(new Error("No route found for path: " + path))
         }
         const main = res.fn
-        const params$ = compose({[`${driverName}.params`]: O.just(res.params)}, null, true)
+        const params$ = compose({[`${driverName}.params`]: O.just(res.params)})
         return run(in$.merge(params$), main)
       })
     }
