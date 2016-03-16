@@ -12,13 +12,6 @@ import GithubSearch from "./intermediate-github-search"
 import makeRouter from "./advanced-router-driver"
 
 
-function makeSeconds() {
-  return function secondsDriver() {
-    const signals = O.interval(1000).startWith(0)
-    return {signals}
-  }
-}
-
 const main = T => in$ => {
   const {Router: {route}} = T
 
@@ -91,7 +84,6 @@ const Playground = (T, Example) => in$ => {
 const [Transducers, signal$, execute] = TSERS({
   DOM: makeReactDOM("#app"),
   HTTP: makeHTTP(),
-  Seconds: makeSeconds(),
   Router: makeRouter()
 })
 const {run} = Transducers
