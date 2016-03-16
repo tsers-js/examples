@@ -1,15 +1,14 @@
 import {Observable as O} from "rx"
 import TSERS from "@tsers/core"
 import makeReactDOM from "@tsers/react"
-import makeRouter from "./05-router-driver"
-
 import makeHTTP from "@tsers/http"
 
-import Hello from "./01-hello-world"
-import Counter from "./02-counter"
-import NestedCounters from "./03-nested-counters"
-import CounterList from "./04-counters-list"
-import GithubSearch from "./05-github-search"
+import Hello from "./basic-hello-world"
+import Counter from "./basic-counter"
+import NestedCounters from "./intermediate-nested-counters"
+import CounterList from "./intermediate-counter-list"
+import GithubSearch from "./intermediate-github-search"
+import makeRouter from "./advanced-router-driver"
 
 
 function makeSeconds() {
@@ -28,7 +27,7 @@ const main = T => in$ => {
   return route(in$, "Router", {
     "/hello": Playground(T, Hello),
     "/counter": Playground(T, Counter),
-    "/counters": Playground(T, NestedCounters),
+    "/nested": Playground(T, NestedCounters),
     "/list": Playground(T, CounterList),
     "/github": Playground(T, GithubSearch),
     "/*": Navigation(T)
@@ -45,7 +44,7 @@ const Navigation = T => in$ => {
       h("ul.examples", [
         h("li", [h("a", {href: "#/hello"}, "Hello World")]),
         h("li", [h("a", {href: "#/counter"}, "Counter")]),
-        h("li", [h("a", {href: "#/counters"}, "Nested Counters")]),
+        h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
         h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
         h("li", [h("a", {href: "#/github"}, "GitHub Search")])
       ])

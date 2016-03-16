@@ -1,6 +1,6 @@
 import {Observable as O} from "rx"
 
-import Counter from "../02-counter"
+import Counter from "../basic-counter"
 
 
 const main = (T, initial = {a: 0, b: 5}) => in$ => {
