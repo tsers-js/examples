@@ -3,17 +3,21 @@ import TSERS from "@tsers/core"
 import makeReactDOM from "@tsers/react"
 import makeRouter from "./05-router-driver"
 
+import makeHTTP from "@tsers/http"
 
 import Hello from "./01-hello-world"
 import Counter from "./02-counter"
 import NestedCounters from "./03-nested-counters"
 import CounterList from "./04-counters-list"
+import GithubSearch from "./05-github-search"
 
 
 function makeSeconds() {
   return function secondsDriver() {
     const signals = O.interval(1000).startWith(0)
-    return { signals }
+    return {signals}
+  }
+}
   }
 }
 
@@ -26,6 +30,7 @@ const main = T => in$ => {
     "/counter": Playground(T, Counter),
     "/counters": Playground(T, NestedCounters),
     "/list": Playground(T, CounterList),
+    "/github": Playground(T, GithubSearch),
     "/*": Navigation(T)
   })
 }
@@ -41,7 +46,8 @@ const Navigation = T => in$ => {
         h("li", [h("a", {href: "#/hello"}, "Hello World")]),
         h("li", [h("a", {href: "#/counter"}, "Counter")]),
         h("li", [h("a", {href: "#/counters"}, "Nested Counters")]),
-        h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")])
+        h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
+        h("li", [h("a", {href: "#/github"}, "GitHub Search")])
       ])
     ])
 
@@ -85,6 +91,7 @@ const Playground = (T, Example) => in$ => {
 
 const [Transducers, signal$, execute] = TSERS({
   DOM: makeReactDOM("#app"),
+  HTTP: makeHTTP(),
   Seconds: makeSeconds(),
   Router: makeRouter()
 })

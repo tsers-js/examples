@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@tsers/core": "latest",
+    "@tsers/http": "latest",
     "@tsers/react": "latest",
     "history": "^2.0.1",
     "routes": "^2.1.0",
