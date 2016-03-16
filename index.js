@@ -5,6 +5,7 @@ import makeHTTP from "@tsers/http"
 
 import Hello from "./basic-hello-world"
 import Counter from "./basic-counter"
+import NaiveNesting from "./basic-naive-nested-counters"
 import NestedCounters from "./intermediate-nested-counters"
 import CounterList from "./intermediate-counter-list"
 import GithubSearch from "./intermediate-github-search"
@@ -27,6 +28,7 @@ const main = T => in$ => {
   return route(in$, "Router", {
     "/hello": Playground(T, Hello),
     "/counter": Playground(T, Counter),
+    "/naive-nested": Playground(T, NaiveNesting),
     "/nested": Playground(T, NestedCounters),
     "/list": Playground(T, CounterList),
     "/github": Playground(T, GithubSearch),
@@ -44,6 +46,7 @@ const Navigation = T => in$ => {
       h("ul.examples", [
         h("li", [h("a", {href: "#/hello"}, "Hello World")]),
         h("li", [h("a", {href: "#/counter"}, "Counter")]),
+        h("li", [h("a", {href: "#/naive-nested"}, "Naive Nested Counters")]),
         h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
         h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
         h("li", [h("a", {href: "#/github"}, "GitHub Search")])
