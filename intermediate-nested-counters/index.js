@@ -4,7 +4,7 @@ import Counter from "../basic-counter"
 
 
 const main = (T, initial = {a: 0, b: 5}) => in$ => {
-  const {DOM: {h, prepare, events}, run, compose, decompose, lift} = T
+  const {DOM: {h, prepare, events}, run, compose, decompose, decomposeLatest} = T
 
   const [actions] = decompose(in$, "updateA$", "updateB$")
   return intent(view(model(actions)))
@@ -22,8 +22,8 @@ const main = (T, initial = {a: 0, b: 5}) => in$ => {
   }
 
   function view(model$) {
-    const [a, aOut$] = lift(model$.map(m => run(in$, Counter(T, m.a))), "DOM", "value$")
-    const [b, bOut$] = lift(model$.map(m => run(in$, Counter(T, m.b))), "DOM", "value$")
+    const [a, aOut$] = decomposeLatest(model$.map(m => run(in$, Counter(T, m.a))), "DOM", "value$")
+    const [b, bOut$] = decomposeLatest(model$.map(m => run(in$, Counter(T, m.b))), "DOM", "value$")
 
     const vdom$ = O.combineLatest(model$, a.DOM, b.DOM, ({a, b}, aDOM, bDOM) =>
       h("div", [
