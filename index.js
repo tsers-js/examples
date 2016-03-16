@@ -18,9 +18,6 @@ function makeSeconds() {
     return {signals}
   }
 }
-  }
-}
-
 
 const main = T => in$ => {
   const {Router: {route}} = T
