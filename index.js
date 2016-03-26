@@ -5,7 +5,8 @@ import HTTP from "@tsers/http"
 import Model from "@tsers/model"
 
 import Hello from "./hello-world"
-/*import Counter from "./basic-counter"
+import Counter from "./counter"
+/*
 import NaiveNesting from "./basic-naive-nested-counters"
 import NestedCounters from "./intermediate-nested-counters"
 import CounterList from "./intermediate-counter-list"
@@ -17,8 +18,10 @@ import Router from "./router"
 TSERS(main, {
   HTTP: HTTP(),
   DOM: ReactDOM("#app"),
-  model: Model({}),
-  Router: Router()
+  Router: Router(),
+  model$: Model({
+    counter: 0
+  }, {logging: true})
 })
 
 function main(signals) {
@@ -28,7 +31,7 @@ function main(signals) {
     h("h1", "Example list"),
     h("ul.examples", [
       h("li", [h("a", {href: "#/hello"}, "Hello World")]),
-      //h("li", [h("a", {href: "#/counter"}, "Counter")]),
+      h("li", [h("a", {href: "#/counter"}, "Counter")]),
       //h("li", [h("a", {href: "#/naive-nested"}, "Naive Nested Counters")]),
       //h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
       //h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
@@ -38,7 +41,7 @@ function main(signals) {
 
   return route(signals, {
     "/hello": Playground(Hello),
-    //"/counter": Playground(Counter),
+    "/counter": Playground(Counter, "counter"),
     //"/naive-nested": Playground(NaiveNesting),
     //"/nested": Playground(T, NestedCounters),
     //"/list": Playground(T, CounterList),
@@ -47,10 +50,13 @@ function main(signals) {
   })
 }
 
-function Playground(Example) {
+function Playground(Example, modelKey = "none") {
   return signals => {
     const {DOM: {h, prepare, events}, mux, demux} = signals
-    const [example, out$] = demux(Example(signals), "DOM")
+    const [example, out$] = demux(Example({
+      ...signals,
+      model$: signals.model$.lens(modelKey)
+    }), "DOM")
 
     const vdom$ = prepare(example.DOM.map(vdom =>
       h("div", [
