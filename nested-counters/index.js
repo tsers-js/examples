@@ -60,3 +60,21 @@ export default function main(signals) {
     model$: resetMod$
   }, rest$)   // add child signals to muxed output signals
 }
+
+/*
+
+// In order to run this app, you must setup a model interpreter
+// with some initial state
+
+import TSERS from "@tsers/core"
+import ReactDOM from "@tsers/react"
+import Model from "@tsers/model"
+
+import Nested from "./nested-counters"
+
+TSERS(Nested, {
+  DOM: ReactDOM("#app"),
+  model$: Model({a: 0, b: 0})
+})
+
+*/
