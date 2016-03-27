@@ -7,6 +7,7 @@ import Model from "@tsers/model"
 import Hello from "./hello-world"
 import Counter from "./counter"
 import Nested from "./nested-counters"
+import List, {nextId} from "./counter-list"
 /*
 import NestedCounters from "./intermediate-nested-counters"
 import CounterList from "./intermediate-counter-list"
@@ -21,7 +22,11 @@ TSERS(main, {
   Router: Router(),
   model$: Model({
     counter: 0,
-    nested: {a: 0, b: 0}
+    nested: {a: 0, b: 0},
+    list: [
+      {id: nextId(), value: 0},
+      {id: nextId(), value: 0}
+    ]
   }, {logging: true})
 })
 
@@ -34,8 +39,7 @@ function main(signals) {
       h("li", [h("a", {href: "#/hello"}, "Hello World")]),
       h("li", [h("a", {href: "#/counter"}, "Counter")]),
       h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
-      //h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
-      //h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
+      h("li", [h("a", {href: "#/list"}, "Counter List")]),
       //h("li", [h("a", {href: "#/github"}, "GitHub Search")])
     ])
   ])
@@ -44,8 +48,7 @@ function main(signals) {
     "/hello": Playground(Hello),
     "/counter": Playground(Counter, "counter"),
     "/nested": Playground(Nested, "nested"),
-    //"/nested": Playground(T, NestedCounters),
-    //"/list": Playground(T, CounterList),
+    "/list": Playground(List, "list"),
     //"/github": Playground(T, GithubSearch),
     "/*": Navigation(navi)
   })
