@@ -6,8 +6,8 @@ import Model from "@tsers/model"
 
 import Hello from "./hello-world"
 import Counter from "./counter"
+import Nested from "./nested-counters"
 /*
-import NaiveNesting from "./basic-naive-nested-counters"
 import NestedCounters from "./intermediate-nested-counters"
 import CounterList from "./intermediate-counter-list"
 import GithubSearch from "./intermediate-github-search"
@@ -20,7 +20,8 @@ TSERS(main, {
   DOM: ReactDOM("#app"),
   Router: Router(),
   model$: Model({
-    counter: 0
+    counter: 0,
+    nested: {a: 0, b: 0}
   }, {logging: true})
 })
 
@@ -32,7 +33,7 @@ function main(signals) {
     h("ul.examples", [
       h("li", [h("a", {href: "#/hello"}, "Hello World")]),
       h("li", [h("a", {href: "#/counter"}, "Counter")]),
-      //h("li", [h("a", {href: "#/naive-nested"}, "Naive Nested Counters")]),
+      h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
       //h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
       //h("li", [h("a", {href: "#/list"}, "Dynamic Counter List")]),
       //h("li", [h("a", {href: "#/github"}, "GitHub Search")])
@@ -42,7 +43,7 @@ function main(signals) {
   return route(signals, {
     "/hello": Playground(Hello),
     "/counter": Playground(Counter, "counter"),
-    //"/naive-nested": Playground(NaiveNesting),
+    "/nested": Playground(Nested, "nested"),
     //"/nested": Playground(T, NestedCounters),
     //"/list": Playground(T, CounterList),
     //"/github": Playground(T, GithubSearch),
