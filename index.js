@@ -8,6 +8,7 @@ import Hello from "./hello-world"
 import Counter from "./counter"
 import Nested from "./nested-counters"
 import List, {nextId} from "./counter-list"
+import GithubSearch from "./github-search"
 /*
 import NestedCounters from "./intermediate-nested-counters"
 import CounterList from "./intermediate-counter-list"
@@ -20,13 +21,19 @@ TSERS(main, {
   HTTP: HTTP(),
   DOM: ReactDOM("#app"),
   Router: Router(),
+
+  // set sensible initial values for the examples
   model$: Model({
     counter: 0,
     nested: {a: 0, b: 0},
     list: [
       {id: nextId(), value: 0},
       {id: nextId(), value: 0}
-    ]
+    ],
+    github: {
+      text: "",
+      repositories: []
+    }
   }, {logging: true})
 })
 
@@ -40,7 +47,7 @@ function main(signals) {
       h("li", [h("a", {href: "#/counter"}, "Counter")]),
       h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
       h("li", [h("a", {href: "#/list"}, "Counter List")]),
-      //h("li", [h("a", {href: "#/github"}, "GitHub Search")])
+      h("li", [h("a", {href: "#/github"}, "GitHub Search")])
     ])
   ])
 
@@ -49,7 +56,7 @@ function main(signals) {
     "/counter": Playground(Counter, "counter"),
     "/nested": Playground(Nested, "nested"),
     "/list": Playground(List, "list"),
-    //"/github": Playground(T, GithubSearch),
+    "/github": Playground(GithubSearch, "github"),
     "/*": Navigation(navi)
   })
 }
