@@ -8,7 +8,7 @@ export default function makeUndoable(state$, maxRevs = 10) {
   // Undoable. It doesn't process modifications - all modifications are propagated
   // to the state as they are
   const undoable$ = state$.lens(L.lens(
-    s => s instanceof Undoable ? s : new Undoable([s]),
+    s => Undoable.isUndoable(s) ? s : new Undoable([s]),
     next => next
   ))
 
@@ -47,28 +47,35 @@ export default function makeUndoable(state$, maxRevs = 10) {
  * than the "max revision" count, the oldest revisions are discarded as soon as new
  * revisions appear.
  */
-const UndoableWithMaxRevs = maxRevs => class Undoable {
-  constructor(revs, cursor = 0) {
-    this.revs = revs
-    this.cursor = cursor
+const UndoableWithMaxRevs = maxRevs => {
+  class Undoable {
+    constructor(revs, cursor = 0) {
+      this.revs = revs
+      this.cursor = cursor
+    }
+    get() {
+      return this.revs[this.revs.length - this.cursor - 1]
+    }
+    update(next) {
+      return this.cursor === 0 ? new Undoable(R.takeLast(maxRevs, [...this.revs, next]))
+        : new Undoable([...R.take(this.revs.length - this.cursor, this.revs), next])
+    }
+    undoMod() {
+      return () => new Undoable(this.revs, Math.min(this.revs.length - 1, this.cursor + 1))
+    }
+    redoMod() {
+      return () => new Undoable(this.revs, Math.max(0, this.cursor - 1))
+    }
+    canUndo() {
+      return this.cursor < this.revs.length - 1
+    }
+    canRedo() {
+      return this.cursor > 0
+    }
   }
-  get() {
-    return this.revs[this.revs.length - this.cursor - 1]
-  }
-  update(next) {
-    return this.cursor === 0 ? new Undoable(R.takeLast(maxRevs, [...this.revs, next]))
-      : new Undoable([...R.take(this.revs.length - this.cursor, this.revs), next])
-  }
-  undoMod() {
-    return () => new Undoable(this.revs, Math.min(this.revs.length - 1, this.cursor + 1))
-  }
-  redoMod() {
-    return () => new Undoable(this.revs, Math.max(0, this.cursor - 1))
-  }
-  canUndo() {
-    return this.cursor < this.revs.length - 1
-  }
-  canRedo() {
-    return this.cursor > 0
-  }
+  Undoable.prototype.__ID = UndoableID
+  Undoable.isUndoable = x => x && x.__ID === UndoableID
+  return Undoable
 }
+
+const UndoableID = {}
