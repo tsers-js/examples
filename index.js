@@ -11,11 +11,6 @@ import List, {nextId} from "./counter-list"
 import GithubSearch from "./github-search"
 import BMI from "./bmi-counter"
 import Undoable from "./undoable-counters"
-/*
-import NestedCounters from "./intermediate-nested-counters"
-import CounterList from "./intermediate-counter-list"
-import GithubSearch from "./intermediate-github-search"
-*/
 import Router from "./router"
 
 // start app
