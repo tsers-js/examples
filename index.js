@@ -9,6 +9,7 @@ import Counter from "./counter"
 import Nested from "./nested-counters"
 import List, {nextId} from "./counter-list"
 import GithubSearch from "./github-search"
+import BMI from "./bmi-counter"
 import Undoable from "./undoable-counters"
 /*
 import NestedCounters from "./intermediate-nested-counters"
@@ -52,6 +53,7 @@ function main(signals) {
       h("li", [h("a", {href: "#/nested"}, "Nested Counters")]),
       h("li", [h("a", {href: "#/list"}, "Counter List")]),
       h("li", [h("a", {href: "#/github"}, "GitHub Search")]),
+      h("li", [h("a", {href: "#/bmi"}, "BMI Counter")]),
       h("li", [h("a", {href: "#/undoable"}, "Undoable Counters")])
     ])
   ])
@@ -62,6 +64,7 @@ function main(signals) {
     "/nested": Playground(Nested, "nested"),
     "/list": Playground(List, "list"),
     "/github": Playground(GithubSearch, "github"),
+    "/bmi": Playground(BMI, "bmi"),
     "/undoable": Playground(Undoable, "undoable"),
     "/*": Navigation(navi)
   })
