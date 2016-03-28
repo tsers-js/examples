@@ -3,15 +3,13 @@
 [![Gitter](https://img.shields.io/gitter/room/tsers-js/chat.js.svg?style=flat-square)](https://gitter.im/tsers-js/chat)
 [![GitHub issues](https://img.shields.io/badge/issues-%40tsers%2Fcore-blue.svg?style=flat-square)](https://github.com/tsers-js/core/issues)
 
-## Running examples
+## Running the examples
 
 ```bash
 git clone https://github.com/tsers-js/examples.git
 cd examples
 npm i && npm run examples
 ```
-
-## Running the tutorials
 
 ## Tutorial
 
@@ -474,7 +472,7 @@ as a model interpreter. `Hello` application expects the model to be a string
 (text value) so we need to get the `text` property by using lens (should be 
 nothing new here, huh?).
 
-#### Extracting values from the lifted sinks
+#### Extracting values from output signal arrays
 
 Well.. now you have an observable that contains a list of child application
 output signals. But how to extract those signals? `demux` doesn't work because
