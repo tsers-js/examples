@@ -16,7 +16,8 @@
     "rx"
   ],
   "scripts": {
-    "start": "mkdir -p dist && browserify -t babelify index.js > dist/bundle.js && open index.html",
+    "example": "mkdir -p dist && browserify -t babelify index.js > dist/bundle.js && open index.html",
+    "tutorial": "./tutorial/run_tutorial",
     "test": "eslint src test",
     "watch": "mkdir -p dist && watchify -v -t babelify index.js -o dist/bundle.js"
   },
