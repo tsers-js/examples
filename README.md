@@ -47,7 +47,7 @@ application doesn't need to know about implementation details of low-level thing
 like DOM rendering or HTTP request formats,
 
 **Interpreters** are the bridge between the application logic and computer: they
-read the application output signals and *interpret* them, causing effects like DOM 
+read the application output signals and *interpret* them, causing **effects** like DOM 
 rendering, interpreter's internal state changing or HTTP request sending. The purpose
 of the interpreters is to **abstract the external world** so that the application doesn't
 need to care whether e.g. it's virtual dom is rendered to the actual DOM (client) or
