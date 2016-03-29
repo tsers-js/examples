@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+npm i
+mkdir -p dist
+./node_modules/.bin/browserify -t babelify tutorial/$1 > dist/bundle.js
+open index.html

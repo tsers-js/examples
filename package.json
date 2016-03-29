@@ -1,8 +1,8 @@
 {
   "name": "@tsers/examples",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
-  "description": "tsers",
+  "description": "TSERSful examples",
   "author": "Matti Lankinen <m.lankinen@iki.fi> (https://github.com/milankinen)",
   "license": "MIT",
   "repository": {
@@ -11,17 +11,21 @@
   },
   "keywords": [
     "example",
-    "tsers"
+    "tsers",
+    "rxjs",
+    "rx"
   ],
   "scripts": {
-    "start": "mkdir -p dist && browserify -t babelify index.js > dist/bundle.js && open index.html",
+    "examples": "mkdir -p dist && browserify -t babelify examples > dist/bundle.js && open index.html",
+    "tutorial": "./tutorial/run_tutorial",
     "test": "eslint src test",
     "watch": "mkdir -p dist && watchify -v -t babelify index.js -o dist/bundle.js"
   },
   "dependencies": {
-    "@tsers/core": "latest",
-    "@tsers/http": "latest",
-    "@tsers/react": "latest",
+    "@tsers/core": "1.x",
+    "@tsers/http": "1.x",
+    "@tsers/model": "1.x",
+    "@tsers/react": "1.x",
     "history": "^2.0.1",
     "routes": "^2.1.0",
     "rx": "^4.1.0"
