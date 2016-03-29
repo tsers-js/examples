@@ -16,7 +16,7 @@ npm i && npm run examples
 This tutorial is a quick walk through to `TSERS` architecture and its best
 practices (at least in author's opinion). 
 
-This tutorial assumes that you've read the **[TSERS core instroduction](https://github.com/tsers-js#introduction)**
+This tutorial assumes that you've read the **[TSERS core concepts](https://github.com/tsers-js)**
 and have understanding about RxJS. The purpose of this tutorial is not to give
 teach you to program with observables. There are many great introductions and full 
 length books covering that topic already. One good online introduction can be
