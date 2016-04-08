@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "examples": "mkdir -p dist && browserify -t babelify examples > dist/bundle.js && open index.html",
+    "kefir-example": "mkdir -p dist && browserify -t babelify examples/kefir.js > dist/bundle.js && open index.html",
     "tutorial": "./tutorial/run_tutorial",
     "test": "eslint src test",
     "watch": "mkdir -p dist && watchify -v -t babelify examples/index.js -o dist/bundle.js"
@@ -24,6 +25,7 @@
   "dependencies": {
     "@tsers/core": "2.0.0-alpha1",
     "@tsers/http": "2.0.0-alpha1",
+    "@tsers/kefir": "latest",
     "@tsers/model": "2.0.0-alpha1",
     "@tsers/react": "latest",
     "@tsers/rx": "latest",
