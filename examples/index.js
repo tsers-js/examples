@@ -1,6 +1,6 @@
-import {Observable as O} from "rx"
+import Rx, {Observable as O} from "@tsers/rx"
 import TSERS from "@tsers/core"
-import ReactDOM from "@tsers/react"
+import Snabbdom from "@tsers/snabbdom"
 import HTTP from "@tsers/http"
 import Model from "@tsers/model"
 
@@ -14,9 +14,9 @@ import Undoable from "./undoable-counters"
 import Router from "./router"
 
 // start app
-TSERS(main, {
+TSERS(Rx, main, {
   HTTP: HTTP(),
-  DOM: ReactDOM("#app"),
+  DOM: Snabbdom("#app"),
   Router: Router(),
 
   // set sensible initial values for the examples
