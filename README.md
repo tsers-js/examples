@@ -28,7 +28,7 @@ tutorials can be done by using terminal:
 ```bash
 git clone https://github.com/tsers-js/examples.git
 cd examples
-npm run tutorial <tutorial-name>    # e.g. npm run tutorial 01-hello-world
+npm i && npm run tutorial <tutorial-name>    # e.g. npm run tutorial 01-hello-world
 ``` 
 
 Happy learning!
